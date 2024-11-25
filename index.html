@@ -461,14 +461,14 @@
 	pornTextElt.addEventListener("input", textOnInput);
 	hubTextElt.addEventListener("input", textOnInput);
 
-	/*function textOnKeyDown(e) {
+	function textOnKeyDown(e) {
 		if (e.key === "Enter") {
 			e.preventDefault();
 		}
 	}
 
 	pornTextElt.addEventListener("keydown", textOnKeyDown);
-	hubTextElt.addEventListener("keydown", textOnKeyDown);*/
+	hubTextElt.addEventListener("keydown", textOnKeyDown);
 
 	pornhubElt.addEventListener("click", function(e) {
 		if (e.target !== pornTextElt && e.target !== hubTextElt) {
