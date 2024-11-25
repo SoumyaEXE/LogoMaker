@@ -467,20 +467,30 @@
 		}
 	}
 
-	pornTextElt.addEventListener("keydown", textOnKeyDown);
-	hubTextElt.addEventListener("keydown", textOnKeyDown);
+	pornhubElt.addEventListener("click", function (e) {
+    if (e.target !== pornTextElt && e.target !== hubTextElt) {
+        var rect = e.target.getBoundingClientRect();
+        let targetElement;
 
-	pornhubElt.addEventListener("click", function(e) {
-		if (e.target !== pornTextElt && e.target !== hubTextElt) {
-			var rect = e.target.getBoundingClientRect();
-			if (style2 ? e.clientY - rect.top < pornhubElt.clientHeight / 2 : e.clientX - rect.left < pornhubElt.clientWidth / 2) {
-				pornTextElt.focus();
-			} else {
-				hubTextElt.focus();
-			}
-			document.execCommand("selectAll", false, null);
-		}
-	});
+        if (style2 ? e.clientY - rect.top < pornhubElt.clientHeight / 2 : e.clientX - rect.left < pornhubElt.clientWidth / 2) {
+            targetElement = pornTextElt;
+        } else {
+            targetElement = hubTextElt;
+        }
+
+        targetElement.focus();
+
+        // Sanitize and enforce valid text content
+        targetElement.textContent = targetElement.textContent.replace(/[^a-zA-Z0-9\s]/g, "").trim();
+
+        // Use modern Range API to select all text
+        const range = document.createRange();
+        range.selectNodeContents(targetElement);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+});
 
 	function updateFilename() {
 		filename = filenameElt.value;
