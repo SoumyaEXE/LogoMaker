@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme-color" content="#0d0d0d">
-    <meta name="keywords" content="pornhub, logo, maker, funny, meme, custom, generator">
-    <meta name="description" content="Create custom logos in the iconic PornHub style with this fun and easy-to-use generator.">
+    <meta name="keywords" content="pornhub, logo, maker, funny, meme, custom, generator, style">
+    <meta name="description" content="Create custom logos in the iconic PornHub style with this fun, easy-to-use generator.">
     <meta name="author" content="Soumyadeep Dey">
     <meta name="reply-to" content="soulsoumya1234@gmail.com">
     <meta name="url" content="https://logohub.vercel.app">
+    <meta name="copyright" content="Soumyadeep Dey">
 
     <title>PornHub Style Logo Maker</title>
 
@@ -16,7 +17,6 @@
     <link rel="icon" type="image/png" href="favicon.png">
 
     <style>
-        /* Fallback font loading */
         @font-face {
             font-family: 'DIN Next Pro';
             src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/webfonts/DINNextPro-Bold.woff2') format('woff2');
@@ -27,9 +27,9 @@
     </style>
 </head>
 <body>
-    <main role="main">
+    <main role="main" aria-labelledby="main-title">
         <div class="container">
-            <h1 class="mt-4">PornHub Style Logo Maker</h1>
+            <h1 id="main-title" class="mt-4">PornHub Style Logo Maker</h1>
             <div class="tip" id="tip">
                 <div class="tip-inner">Click the text below to edit your logo.</div>
             </div>
@@ -37,7 +37,7 @@
                 <div class="col-md-7 mb-4">
                     <div class="pornhub-wrapper" id="pornhub-wrapper">
                         <div class="pornhub-fill" id="pornhub-fill"></div>
-                        <div class="pornhub" id="pornhub" role="textbox" aria-label="Editable PornHub logo">
+                        <div class="pornhub" id="pornhub" role="textbox" aria-label="Editable PornHub style logo">
                             <div class="porn-text" id="porn-text" contenteditable="true" spellcheck="false" autocorrect="off" autocapitalize="on" aria-label="First part of logo">Porn</div>
                             <div class="hub-text" id="hub-text" contenteditable="true" spellcheck="false" autocorrect="off" autocapitalize="off" aria-label="Second part of logo">Hub</div>
                         </div>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="form-group col-6 d-flex align-items-end">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" id="font-size-auto" class="custom-control-input" checked aria-label="Auto font size">
+                                    <input type="checkbox" id="font-size-auto" class="custom-control-input" checked aria-label="Enable auto font size">
                                     <label class="custom-control-label" for="font-size-auto">Auto Font Size</label>
                                 </div>
                             </div>
@@ -93,25 +93,40 @@
                                 <div class="form-row">
                                     <div class="form-group col-6 mb-0">
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" id="style-1" name="style" class="custom-control-input" checked aria-label="Style 1 (horizontal)">
+                                            <input type="radio" id="style-1" name="style" class="custom-control-input" checked aria-label="Horizontal style">
                                             <label class="custom-control-label" for="style-1">Horizontal</label>
                                         </div>
                                     </div>
                                     <div class="form-group col-6 mb-0">
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" id="style-2" name="style" class="custom-control-input" aria-label="Style 2 (vertical)">
+                                            <input type="radio" id="style-2" name="style" class="custom-control-input" aria-label="Vertical style">
                                             <label class="custom-control-label" for="style-2">Vertical</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="filename">Filename</label>
-                            <input type="text" id="filename" class="form-control" value="logo.jpg" placeholder="logo.jpg" spellcheck="false" autocorrect="off" autocapitalize="off" aria-describedby="filename-help">
-                            <small id="filename-help" class="form-text text-muted">e.g., mylogo.jpg</small>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label for="filename">Filename</label>
+                                <input type="text" id="filename" class="form-control" value="logo.jpg" placeholder="logo.jpg" spellcheck="false" autocorrect="off" autocapitalize="off" aria-describedby="filename-help">
+                                <small id="filename-help" class="form-text text-muted">e.g., mylogo.jpg</small>
+                            </div>
+                            <div class="form-group col-6 d-flex align-items-end">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" id="preview-mode" class="custom-control-input" aria-label="Enable preview mode">
+                                    <label class="custom-control-label" for="preview-mode">Preview Mode</label>
+                                </div>
+                            </div>
                         </div>
-                        <button type="button" id="save" class="btn btn-lg btn-block btn-outline-primary" aria-label="Save logo as image">Save Image</button>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <button type="button" id="save" class="btn btn-lg btn-block btn-outline-primary" aria-label="Save logo as image">Save Image</button>
+                            </div>
+                            <div class="form-group col-6">
+                                <button type="button" id="reset" class="btn btn-lg btn-block btn-outline-secondary" aria-label="Reset form to default">Reset</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -140,7 +155,9 @@
                 style1: document.getElementById('style-1'),
                 style2: document.getElementById('style-2'),
                 filename: document.getElementById('filename'),
+                previewMode: document.getElementById('preview-mode'),
                 save: document.getElementById('save'),
+                reset: document.getElementById('reset'),
                 tip: document.getElementById('tip')
             };
 
@@ -154,7 +171,8 @@
                 fontSizeAuto: true,
                 lightTheme: false,
                 style2: false,
-                filename: 'logo.jpg'
+                filename: 'logo.jpg',
+                previewMode: false
             };
 
             const defaultState = { ...state };
@@ -169,8 +187,6 @@
                 const num = parseFloat(value);
                 return Math.max(min, Math.min(isNaN(num) ? defaultValue : num, max));
             };
-
-            // Debounce Utility
             const debounce = (func, wait) => {
                 let timeout;
                 return (...args) => {
@@ -178,16 +194,12 @@
                     timeout = setTimeout(() => func(...args), wait);
                 };
             };
-
-            // Canvas Download
             const downloadCanvas = (canvas, filename) => {
                 const link = document.createElement('a');
                 link.download = filename;
                 link.href = canvas.toDataURL('image/jpeg', 1);
                 link.click();
             };
-
-            // Get Text Metrics
             const getTextHeight = (font) => {
                 const span = document.createElement('span');
                 span.textContent = 'Hg';
@@ -208,7 +220,7 @@
                 return { ascent, height, descent: height - ascent };
             };
 
-            // Update State from Inputs
+            // Update State
             const updateState = () => {
                 state = {
                     pornText: sanitizeText(elements.pornText.textContent),
@@ -219,7 +231,8 @@
                     fontSizeAuto: elements.fontSizeAuto.checked,
                     lightTheme: elements.themeLight.checked,
                     style2: elements.style2.checked,
-                    filename: sanitizeText(elements.filename.value) || 'logo.jpg'
+                    filename: sanitizeText(elements.filename.value) || 'logo.jpg',
+                    previewMode: elements.previewMode.checked
                 };
             };
 
@@ -235,11 +248,11 @@
                 history.replaceState({}, '', url);
             };
 
-            // Load from Query Params
+            // Load Query Params
             const loadQueryParams = () => {
                 const params = new URLSearchParams(window.location.search);
-                elements.pornText.textContent = params.get('pornText') || state.pornText;
-                elements.hubText.textContent = params.get('hubText') || state.hubText;
+                elements.pornText.textContent = sanitizeText(params.get('pornText') || state.pornText);
+                elements.hubText.textContent = sanitizeText(params.get('hubText') || state.hubText);
                 elements.width.value = formatInt(params.get('width'), state.width, 1, 4096);
                 elements.height.value = formatInt(params.get('height'), state.height, 1, 4096);
                 elements.fontSize.value = formatFloat(params.get('fontSize'), state.fontSize, 1, 1000);
@@ -248,7 +261,8 @@
                 elements.themeDark.checked = !elements.themeLight.checked;
                 elements.style2.checked = params.get('style2') === 'true';
                 elements.style1.checked = !elements.style2.checked;
-                elements.filename.value = params.get('filename') || state.filename;
+                elements.filename.value = sanitizeText(params.get('filename') || state.filename);
+                elements.previewMode.checked = params.get('previewMode') === 'true';
                 updateState();
                 updateUI();
             };
@@ -260,6 +274,7 @@
                 elements.pornhubWrapper.style.maxWidth = `${elements.pornhubWrapper.offsetParent.clientWidth * aspectRatio}px`;
                 elements.pornhub.classList.toggle('light', state.lightTheme);
                 elements.pornhub.classList.toggle('style-2', state.style2);
+                elements.pornhub.classList.toggle('preview-mode', state.previewMode);
                 elements.width.value = state.width;
                 elements.height.value = state.height;
                 adjustFontSize();
@@ -296,12 +311,23 @@
                 document.title = text !== defaultState.pornText + defaultState.hubText ? `${text} - PornHub Style Logo Maker` : 'PornHub Style Logo Maker';
             };
 
-            // Handle Text Input
-            const handleTextInput = debounce(() => {
+            // Reset Form
+            const resetForm = () => {
+                elements.pornText.textContent = defaultState.pornText;
+                elements.hubText.textContent = defaultState.hubText;
+                elements.width.value = defaultState.width;
+                elements.height.value = defaultState.height;
+                elements.fontSize.value = defaultState.fontSize;
+                elements.fontSizeAuto.checked = defaultState.fontSizeAuto;
+                elements.themeDark.checked = !defaultState.lightTheme;
+                elements.themeLight.checked = defaultState.lightTheme;
+                elements.style1.checked = !defaultState.style2;
+                elements.style2.checked = defaultState.style2;
+                elements.filename.value = defaultState.filename;
+                elements.previewMode.checked = defaultState.previewMode;
                 updateState();
-                adjustFontSize();
                 updateUI();
-            }, 100);
+            };
 
             // Save Image
             const saveImage = async () => {
@@ -399,8 +425,20 @@
                 updateState();
                 updateQueryParams();
             }, 200));
-            elements.pornText.addEventListener('input', handleTextInput);
-            elements.hubText.addEventListener('input', handleTextInput);
+            elements.previewMode.addEventListener('change', () => {
+                updateState();
+                updateUI();
+            });
+            elements.pornText.addEventListener('input', debounce(() => {
+                updateState();
+                adjustFontSize();
+                updateUI();
+            }, 100));
+            elements.hubText.addEventListener('input', debounce(() => {
+                updateState();
+                adjustFontSize();
+                updateUI();
+            }, 100));
             elements.pornText.addEventListener('keydown', (e) => e.key === 'Enter' && e.preventDefault());
             elements.hubText.addEventListener('keydown', (e) => e.key === 'Enter' && e.preventDefault());
             elements.pornText.addEventListener('focus', hideTip);
@@ -417,6 +455,7 @@
                 }, 500);
             });
             elements.save.addEventListener('click', saveImage);
+            elements.reset.addEventListener('click', resetForm);
             elements.pornhub.addEventListener('click', (e) => {
                 if (e.target !== elements.pornText && e.target !== elements.hubText) {
                     const rect = e.target.getBoundingClientRect();
