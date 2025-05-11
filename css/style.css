@@ -1,158 +1,166 @@
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Orion+Esperanto+Dika&display=swap');
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
-/* Pornhub Logo Color */
-.pornhub-logo {
-    font-family: 'Orion Esperanto Dika', sans-serif;
-    font-weight: bold;
-    color: #f7971d;
+/* PornHub Official Colors */
+:root {
+    --ph-orange: #ff9000;
+    --ph-black: #0d0d0d;
+    --ph-white: #ffffff;
+    --ph-dark-gray: #1a1a1a;
+    --ph-light-gray: #4a4a4a;
+    --ph-shadow: rgba(255, 144, 0, 0.3);
 }
 
 /* General Styles */
 html {
     touch-action: manipulation;
+    scroll-behavior: smooth;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
-    color: #ccc;
-    background-color: #141414;
+    color: #d9d9d9;
+    background: linear-gradient(180deg, var(--ph-dark-gray) 0%, #0f0f0f 100%);
     margin: 0;
     padding: 0;
-    transition: background-color 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.5s ease;
 }
 
-a, a:focus, a:hover {
-    color: #f90;
-    border-radius: 0.1rem;
-    transition: color 0.3s ease, background-color 0.3s ease;
+a {
+    color: var(--ph-orange);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--ph-white);
+    background: var(--ph-shadow);
 }
 
 a:active {
-    color: #fff;
-    background-color: #7f4c00;
-    text-decoration: none;
-    box-shadow: 0 0 0 0.2rem #7f4c00;
+    color: var(--ph-white);
+    background: var(--ph-orange);
+    box-shadow: 0 0 8px var(--ph-shadow);
 }
 
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
-    color: #fff;
+    color: var(--ph-white);
+    font-weight: 600;
+    letter-spacing: -0.02em;
 }
 
 .container {
-    max-width: 960px;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 16px;
 }
 
 /* Footer */
 .mastfoot {
-    color: rgba(255, 255, 255, .5);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 2rem 0;
 }
 
 /* Forms */
 .form-control {
-    color: #fff;
-    background-color: #2f2f2f;
-    border-color: #2f2f2f;
-    transition: border-color 0.3s ease;
+    color: var(--ph-white);
+    background: #252525;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 12px;
+    transition: all 0.3s ease;
 }
 
 .form-control:focus {
-    color: #fff;
-    background-color: #2f2f2f;
-    border-color: #f90;
-    box-shadow: 0 0 0 0.2rem rgba(255, 153, 0, 0.25);
+    border-color: var(--ph-orange);
+    background: #2a2a2a;
+    box-shadow: 0 0 10px var(--ph-shadow);
+    outline: none;
 }
 
 .form-control::placeholder {
-    color: #808080;
+    color: #666;
 }
 
 .form-control:disabled, .form-control[readonly] {
-    background-color: #e9ecef;
-}
-
-.btn-secondary, .btn-secondary:hover, .btn-secondary:focus {
-    color: #333;
-    background-color: #fff;
-    border: .05rem solid #fff;
+    background: #333;
+    color: #888;
 }
 
 .btn-outline-primary {
-    color: #f90;
-    border-color: #f90;
+    color: var(--ph-orange);
+    border: 2px solid var(--ph-orange);
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .btn-outline-primary:hover {
-    color: #000;
-    background-color: #f90;
-    border-color: #f90;
+    background: var(--ph-orange);
+    color: var(--ph-black);
+    box-shadow: 0 4px 15px var(--ph-shadow);
 }
 
-.btn-outline-primary:focus, .btn-outline-primary.focus {
-    box-shadow: 0 0 0 0.2rem rgba(255, 153, 0, 0.5);
-}
-
-.btn-outline-primary.disabled, .btn-outline-primary:disabled {
-    color: #f90;
-    background-color: transparent;
+.btn-outline-primary:focus {
+    box-shadow: 0 0 0 4px var(--ph-shadow);
 }
 
 /* Custom Controls */
 .custom-control-input:checked ~ .custom-control-label::before {
-    color: #fff;
-    border-color: #f90;
-    background-color: #f90;
+    background: var(--ph-orange);
+    border-color: var(--ph-orange);
 }
 
 .custom-control-input:focus ~ .custom-control-label::before {
-    box-shadow: 0 0 0 0.2rem rgba(255, 153, 0, 0.25);
+    box-shadow: 0 0 8px var(--ph-shadow);
 }
 
 /* Tips */
 .tip {
     position: relative;
-    transition: height 250ms ease-out, opacity 250ms ease-out, transform 250ms ease-out;
+    transition: all 0.3s ease;
 }
 
 .tip-inner {
-    padding: 0.75rem 1.25rem;
-    margin-bottom: 1rem;
-    color: #f90;
-    background-color: #2f2f2f;
-    font-size: 1.25rem;
-    border-radius: 0.25rem;
-    opacity: 1;
-    transform: scale(1);
-    transition: opacity 250ms ease-out, transform 250ms ease-out, color 0.15s ease-out, background-color 0.15s ease-out;
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    background: #252525;
+    color: var(--ph-orange);
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--ph-orange);
+    transform: translateY(0);
+    transition: all 0.3s ease;
 }
 
-.tip-inner:active {
-    color: #fff;
-    background-color: #7f4c00;
+.tip-inner:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .tip.tip-hidden .tip-inner {
     opacity: 0;
-    transform: scale(0.5);
+    transform: translateY(20px);
 }
 
-/* Pornhub Wrapper */
+/* PornHub Logo Wrapper */
 .pornhub-wrapper {
     position: relative;
     top: 50%;
-    margin-right: auto;
-    margin-left: auto;
     transform: translateY(-50%);
+    margin: 0 auto;
+    width: 100%;
+    max-width: 80vmin;
     transition: transform 0.5s ease;
-}
-
-@media (min-width: 768px) {
-    .pornhub-wrapper {
-        max-width: 75vmin;
-    }
 }
 
 .pornhub-fill {
@@ -163,20 +171,26 @@ h1, h2, h3, h4, h5, h6 {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
     text-align: center;
-    font-family: 'Orion Esperanto Dika', sans-serif;
-    font-weight: bold;
-    font-size: 10vmin;
-    line-height: 1.25;
-    color: #fff;
-    background-color: #000;
-    border-radius: 0.25rem;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'DIN Next Pro', 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 12vmin;
+    line-height: 1.2;
+    color: var(--ph-white);
+    background: var(--ph-black);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+}
+
+.pornhub:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
 }
 
 .pornhub.style-2 {
@@ -184,56 +198,52 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .porn-text, .hub-text {
-    padding-right: 0.1em;
-    padding-left: 0.1em;
+    padding: 0.2em 0.4em;
     cursor: text;
     outline: none;
     white-space: pre;
+    transition: all 0.3s ease;
 }
 
 .hub-text {
-    color: #000;
-    background-color: #f7971d;
-    border-radius: 0.1em;
+    color: var(--ph-black);
+    background: var(--ph-orange);
+    border-radius: 6px;
 }
 
 .pornhub.light {
-    color: #000;
-    background-color: #fff;
+    background: var(--ph-white);
+    color: var(--ph-black);
 }
 
 .pornhub.light .hub-text {
-    color: #fff;
-}
-
-.pornhub, .pornhub .hub-text {
-    transition: color 250ms ease-out, background-color 250ms ease-out;
+    color: var(--ph-white);
 }
 
 /* Animations */
 @keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
-.pornhub {
-    animation: fadeIn 1s ease-out;
-}
-
-.porn-text, .hub-text {
-    animation: fadeIn 1s ease-out;
+.pornhub, .porn-text, .hub-text {
+    animation: fadeIn 0.8s ease-out;
 }
 
 /* Responsive Design */
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .pornhub {
-        font-size: 15vmin;
+        font-size: 10vmin;
     }
-    
+    .pornhub-wrapper {
+        max-width: 85vmin;
+    }
+}
+
+@media (max-width: 768px) {
+    .pornhub {
+        font-size: 14vmin;
+    }
     .pornhub-wrapper {
         max-width: 90vmin;
     }
@@ -241,9 +251,8 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 480px) {
     .pornhub {
-        font-size: 20vmin;
+        font-size: 18vmin;
     }
-    
     .pornhub-wrapper {
         max-width: 95vmin;
     }
