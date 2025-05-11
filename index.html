@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme-color" content="#0d0d0d">
     <meta name="keywords" content="pornhub, logo, maker, funny, meme, custom, generator, style">
-    <meta name="description" content="Create custom logos in the iconic PornHub style with this fun, easy-to-use generator.">
+    <meta name="description" content="Create custom logos in the iconic PornHub style with this fun, modern generator.">
     <meta name="author" content="Soumyadeep Dey">
     <meta name="reply-to" content="soulsoumya1234@gmail.com">
     <meta name="url" content="https://logohub.vercel.app">
@@ -27,7 +27,15 @@
     </style>
 </head>
 <body>
-    <main role="main" aria-labelledby="main-title">
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-logo">
+            <span class="loading-text">Porn</span>
+            <span class="loading-hub">Hub</span>
+        </div>
+        <p>Loading your logo maker...</p>
+    </div>
+
+    <main role="main" aria-labelledby="main-title" style="display: none;" id="main-content">
         <div class="container">
             <h1 id="main-title" class="mt-4">PornHub Style Logo Maker</h1>
             <div class="tip" id="tip">
@@ -114,17 +122,20 @@
                             </div>
                             <div class="form-group col-6 d-flex align-items-end">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" id="preview-mode" class="custom-control-input" aria-label="Enable preview mode">
-                                    <label class="custom-control-label" for="preview-mode">Preview Mode</label>
+                                    <input type="checkbox" id="high-res" class="custom-control-input" aria-label="Enable high resolution output">
+                                    <label class="custom-control-label" for="high-res">High Resolution</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-4">
                                 <button type="button" id="save" class="btn btn-lg btn-block btn-outline-primary" aria-label="Save logo as image">Save Image</button>
                             </div>
-                            <div class="form-group col-6">
+                            <div class="form-group col-4">
                                 <button type="button" id="reset" class="btn btn-lg btn-block btn-outline-secondary" aria-label="Reset form to default">Reset</button>
+                            </div>
+                            <div class="form-group col-4">
+                                <button type="button" id="share" class="btn btn-lg btn-block btn-outline-warning" aria-label="Share logo">Share</button>
                             </div>
                         </div>
                     </form>
@@ -133,7 +144,7 @@
         </div>
     </main>
 
-    <footer class="mastfoot my-5 pt-5 text-center">
+    <footer class="mastfoot my-5 pt-5 text-center" id="footer" style="display: none;">
         <p>Made with ♥ by <a href="https://github.com/SoumyaEXE" target="_blank" rel="noopener noreferrer">Soumyadeep Dey</a>.</p>
     </footer>
 
@@ -141,6 +152,9 @@
         (() => {
             // DOM Elements
             const elements = {
+                loadingScreen: document.getElementById('loading-screen'),
+                mainContent: document.getElementById('main-content'),
+                footer: document.getElementById('footer'),
                 pornhub: document.getElementById('pornhub'),
                 pornhubWrapper: document.getElementById('pornhub-wrapper'),
                 pornhubFill: document.getElementById('pornhub-fill'),
@@ -155,9 +169,10 @@
                 style1: document.getElementById('style-1'),
                 style2: document.getElementById('style-2'),
                 filename: document.getElementById('filename'),
-                previewMode: document.getElementById('preview-mode'),
+                highRes: document.getElementById('high-res'),
                 save: document.getElementById('save'),
                 reset: document.getElementById('reset'),
+                share: document.getElementById('share'),
                 tip: document.getElementById('tip')
             };
 
@@ -172,7 +187,7 @@
                 lightTheme: false,
                 style2: false,
                 filename: 'logo.jpg',
-                previewMode: false
+                highRes: false
             };
 
             const defaultState = { ...state };
@@ -220,6 +235,22 @@
                 return { ascent, height, descent: height - ascent };
             };
 
+            // Loading Screen
+            const hideLoadingScreen = () => {
+                elements.loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    elements.loadingScreen.style.display = 'none';
+                    elements.mainContent.style.display = 'block';
+                    elements.footer.style.display = 'block';
+                    elements.mainContent.style.opacity = '0';
+                    elements.footer.style.opacity = '0';
+                    requestAnimationFrame(() => {
+                        elements.mainContent.style.opacity = '1';
+                        elements.footer.style.opacity = '1';
+                    });
+                }, 500);
+            };
+
             // Update State
             const updateState = () => {
                 state = {
@@ -232,7 +263,7 @@
                     lightTheme: elements.themeLight.checked,
                     style2: elements.style2.checked,
                     filename: sanitizeText(elements.filename.value) || 'logo.jpg',
-                    previewMode: elements.previewMode.checked
+                    highRes: elements.highRes.checked
                 };
             };
 
@@ -262,7 +293,7 @@
                 elements.style2.checked = params.get('style2') === 'true';
                 elements.style1.checked = !elements.style2.checked;
                 elements.filename.value = sanitizeText(params.get('filename') || state.filename);
-                elements.previewMode.checked = params.get('previewMode') === 'true';
+                elements.highRes.checked = params.get('highRes') === 'true';
                 updateState();
                 updateUI();
             };
@@ -274,7 +305,6 @@
                 elements.pornhubWrapper.style.maxWidth = `${elements.pornhubWrapper.offsetParent.clientWidth * aspectRatio}px`;
                 elements.pornhub.classList.toggle('light', state.lightTheme);
                 elements.pornhub.classList.toggle('style-2', state.style2);
-                elements.pornhub.classList.toggle('preview-mode', state.previewMode);
                 elements.width.value = state.width;
                 elements.height.value = state.height;
                 adjustFontSize();
@@ -324,9 +354,81 @@
                 elements.style1.checked = !defaultState.style2;
                 elements.style2.checked = defaultState.style2;
                 elements.filename.value = defaultState.filename;
-                elements.previewMode.checked = defaultState.previewMode;
+                elements.highRes.checked = defaultState.highRes;
                 updateState();
                 updateUI();
+            };
+
+            // Share Logo
+            const shareLogo = async () => {
+                try {
+                    const canvas = await generateCanvas();
+                    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 1));
+                    const file = new File([blob], state.filename, { type: 'image/jpeg' });
+                    if (navigator.share) {
+                        await navigator.share({
+                            title: `${state.pornText}${state.hubText} Logo`,
+                            text: 'Check out my custom PornHub-style logo!',
+                            files: [file]
+                        });
+                    } else {
+                        alert('Web Share API not supported. Save the image and share manually.');
+                    }
+                } catch (error) {
+                    alert(`Error sharing logo: ${error.message}`);
+                }
+            };
+
+            // Generate Canvas
+            const generateCanvas = () => {
+                const canvas = document.createElement('canvas');
+                const scale = state.highRes ? 2 : 1;
+                canvas.width = state.width * scale;
+                canvas.height = state.height * scale;
+                const ctx = canvas.getContext('2d');
+                const bgColor = state.lightTheme ? '#ffffff' : '#0d0d0d';
+                const textColor = state.lightTheme ? '#000000' : '#ffffff';
+                const pornhubColor = '#ff9000';
+
+                ctx.scale(scale, scale);
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, state.width, state.height);
+                ctx.translate(state.width / 2, state.height / 2);
+                ctx.font = `700 ${state.fontSize}px 'DIN Next Pro', 'Poppins', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                const pornWidth = ctx.measureText(state.pornText).width;
+                const hubWidth = ctx.measureText(state.hubText).width;
+                const padding = state.fontSize * 0.2;
+                const lineHeight = state.fontSize * 1.25;
+                const radius = state.fontSize * 0.1;
+
+                ctx.fillStyle = textColor;
+                const pornX = state.style2 ? 0 : -(pornWidth + hubWidth + padding * 2) / 2;
+                const pornY = state.style2 ? -lineHeight / 2 : 0;
+                ctx.fillText(state.pornText, pornX, pornY);
+
+                ctx.fillStyle = pornhubColor;
+                const hubX = state.style2 ? -hubWidth / 2 - padding : -(pornWidth + hubWidth + padding * 2) / 2 + pornWidth + padding;
+                const hubY = state.style2 ? lineHeight / 2 - lineHeight : -lineHeight / 2;
+                const hubW = hubWidth + padding * 2;
+                ctx.beginPath();
+                ctx.moveTo(hubX, hubY + radius);
+                ctx.lineTo(hubX, hubY + lineHeight - radius);
+                ctx.arcTo(hubX, hubY + lineHeight, hubX + radius, hubY + lineHeight, radius);
+                ctx.lineTo(hubX + hubW - radius, hubY + lineHeight);
+                ctx.arcTo(hubX + hubW, hubY + lineHeight, hubX + hubW, hubY + lineHeight - radius, radius);
+                ctx.lineTo(hubX + hubW, hubY + radius);
+                ctx.arcTo(hubX + hubW, hubY, hubX + hubW - radius, hubY, radius);
+                ctx.lineTo(hubX + radius, hubY);
+                ctx.arcTo(hubX, hubY, hubX, hubY + radius, radius);
+                ctx.fill();
+
+                ctx.fillStyle = bgColor;
+                ctx.fillText(state.hubText, state.style2 ? 0 : -(pornWidth + hubWidth + padding * 2) / 2 + pornWidth + padding * 2, state.style2 ? lineHeight / 2 : 0);
+
+                return canvas;
             };
 
             // Save Image
@@ -334,51 +436,7 @@
                 elements.save.disabled = true;
                 elements.save.textContent = 'Saving...';
                 try {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = state.width;
-                    canvas.height = state.height;
-                    const ctx = canvas.getContext('2d');
-                    const bgColor = state.lightTheme ? '#ffffff' : '#0d0d0d';
-                    const textColor = state.lightTheme ? '#000000' : '#ffffff';
-                    const pornhubColor = '#ff9000';
-
-                    ctx.fillStyle = bgColor;
-                    ctx.fillRect(0, 0, state.width, state.height);
-                    ctx.translate(state.width / 2, state.height / 2);
-                    ctx.font = `700 ${state.fontSize}px 'DIN Next Pro', 'Poppins', sans-serif`;
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-
-                    const pornWidth = ctx.measureText(state.pornText).width;
-                    const hubWidth = ctx.measureText(state.hubText).width;
-                    const padding = state.fontSize * 0.2;
-                    const lineHeight = state.fontSize * 1.25;
-                    const radius = state.fontSize * 0.1;
-
-                    ctx.fillStyle = textColor;
-                    const pornX = state.style2 ? 0 : -(pornWidth + hubWidth + padding * 2) / 2;
-                    const pornY = state.style2 ? -lineHeight / 2 : 0;
-                    ctx.fillText(state.pornText, pornX, pornY);
-
-                    ctx.fillStyle = pornhubColor;
-                    const hubX = state.style2 ? -hubWidth / 2 - padding : -(pornWidth + hubWidth + padding * 2) / 2 + pornWidth + padding;
-                    const hubY = state.style2 ? lineHeight / 2 - lineHeight : -lineHeight / 2;
-                    const hubW = hubWidth + padding * 2;
-                    ctx.beginPath();
-                    ctx.moveTo(hubX, hubY + radius);
-                    ctx.lineTo(hubX, hubY + lineHeight - radius);
-                    ctx.arcTo(hubX, hubY + lineHeight, hubX + radius, hubY + lineHeight, radius);
-                    ctx.lineTo(hubX + hubW - radius, hubY + lineHeight);
-                    ctx.arcTo(hubX + hubW, hubY + lineHeight, hubX + hubW, hubY + lineHeight - radius, radius);
-                    ctx.lineTo(hubX + hubW, hubY + radius);
-                    ctx.arcTo(hubX + hubW, hubY, hubX + hubW - radius, hubY, radius);
-                    ctx.lineTo(hubX + radius, hubY);
-                    ctx.arcTo(hubX, hubY, hubX, hubY + radius, radius);
-                    ctx.fill();
-
-                    ctx.fillStyle = bgColor;
-                    ctx.fillText(state.hubText, state.style2 ? 0 : -(pornWidth + hubWidth + padding * 2) / 2 + pornWidth + padding * 2, state.style2 ? lineHeight / 2 : 0);
-
+                    const canvas = await generateCanvas();
                     downloadCanvas(canvas, state.filename);
                 } catch (error) {
                     alert(`Error saving image: ${error.message}`);
@@ -425,7 +483,7 @@
                 updateState();
                 updateQueryParams();
             }, 200));
-            elements.previewMode.addEventListener('change', () => {
+            elements.highRes.addEventListener('change', () => {
                 updateState();
                 updateUI();
             });
@@ -456,6 +514,7 @@
             });
             elements.save.addEventListener('click', saveImage);
             elements.reset.addEventListener('click', resetForm);
+            elements.share.addEventListener('click', shareLogo);
             elements.pornhub.addEventListener('click', (e) => {
                 if (e.target !== elements.pornText && e.target !== elements.hubText) {
                     const rect = e.target.getBoundingClientRect();
@@ -483,6 +542,7 @@
             };
 
             // Initialize
+            setTimeout(hideLoadingScreen, 2000); // Simulate loading
             loadQueryParams();
         })();
     </script>
